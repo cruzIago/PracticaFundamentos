@@ -1,13 +1,14 @@
 function fabrica() {
 
     var lista = [];
+    var puntero = 0;
     var subtiposE = ["Placa ABS", "Centralita encendido", "Bornes cableado", "Alternador", "Encendido"];
     var subtiposM = ["Larguero inferior", "Guardabarros", "Larguero superior", "Subchasis", "Puerta"];
     var voltajes = ["3,3", "5", "12", "240"];
     var potencias = ["1", "5", "10", "20"];
     var materiales = ["Acero", "Titanio", "Carbono"];
 
-//Creamos el objeto padre, pieza
+    //Creamos el objeto padre, pieza
     function Pieza(subtipo, codigo, fecha, procesamiento) {
         this.subtipo = subtipo;
         this.codigo = codigo;
@@ -15,7 +16,7 @@ function fabrica() {
         this.procesamiento = procesamiento;
     }
 
-//Creamos la pieza especifica, electrica
+    //Creamos la pieza especifica, electrica
     function piezaElectrica(potencia, voltaje) {
         this.potencia = potencia;
         this.voltaje = voltaje;
@@ -24,7 +25,7 @@ function fabrica() {
 
     piezaElectrica.prototype = new Pieza; //Creamos la herencia de Pieza->piezaElectrica
 
-//Creamos la pieza especifica,mecanica
+    //Creamos la pieza especifica,mecanica
     function piezaMecanica(material) {
         this.material = material;
     }
@@ -32,19 +33,19 @@ function fabrica() {
     piezaMecanica.prototype = new Pieza; //Creamos la herencia de Pieza->piezaMecanica
 
 
-//falta hacer que el boton cambie una variable que cambie el numero de piezas a fabricar
-//por defecto esta en crear 100 piezas
-//falta imprimir todo lo que se ha hecho
+    //falta hacer que el boton cambie una variable que cambie el numero de piezas a fabricar
+    //por defecto esta en crear 100 piezas
+    //falta imprimir todo lo que se ha hecho
     /*String a mostrar como resultado es (Piezas totales: La factoría ha fabricado XX de las cuales YY son
     de tipo eléctrico y ZZ son de tipo mecánico. De las eléctricas, la estación de tratamiento ha aplicado
     barniz normal a AA y ha aplicado barniz especial a BB. De las mecánicas ha galvanizado CC, ha pintado
     DD y ha pulido EE.)*/
 
-//Proceso en factoría
+    //Proceso en factoría
     function Factoria() {
         var contadorE = 0;
         var contadorM = 0;
-        this.generarPieza = function () {
+        this.generarPieza = function() {
 
             if (Math.floor((Math.random() * 100)) < 30) {
                 var nuevaPieza = new piezaElectrica(potencias[Math.floor((Math.random() * 4))], voltajes[Math.floor((Math.random() * 4))]);
@@ -87,11 +88,11 @@ function fabrica() {
     }
 
 
-//Proceso en estación de tratamiento
+    //Proceso en estación de tratamiento
     function estacionTratamiento() {
         var contador = [0, 0, 0, 0, 0];
 
-        this.tratamientoPiezas = function (pieza) {
+        this.tratamientoPiezas = function(pieza) {
             pieza.procesamiento = "";
             if (pieza.codigo.endsWith("E")) {
                 if (pieza.potencia == 1 || pieza.potencia == 5) {
@@ -114,36 +115,79 @@ function fabrica() {
                 }
             }
 
-            var escrito=" De las eléctricas, la estación de tratamiento ha aplicado " +
-                "barniz normal a "+contador[0]+" y ha aplicado barniz especial a "+contador[1]+". De las mecánicas ha galvanizado "+contador[2]+", ha pintado " +
-                contador[4]+" y ha pulido "+contador[3]+".";
-            var devuelve=[pieza,escrito];
+            var escrito = " De las eléctricas, la estación de tratamiento ha aplicado " +
+                "barniz normal a " + contador[0] + " y ha aplicado barniz especial a " + contador[1] + ". De las mecánicas ha galvanizado " + contador[2] + ", ha pintado " +
+                contador[4] + " y ha pulido " + contador[3] + ".";
+            var devuelve = [pieza, escrito];
             return devuelve;
         }
     }
 
-    this.fabricacion = function (nVeces) {
+    this.fabricacion = function(nVeces) {
         var fact = new Factoria();
         var est = new estacionTratamiento();
         var procEs;
         var piezaEs;
         for (var i = 0; i < nVeces; i++) {
-            piezaEs=fact.generarPieza();
+            piezaEs = fact.generarPieza();
             procEs = est.tratamientoPiezas(piezaEs[0]);
             lista.push(procEs[0]);
         }
-        document.getElementById("resultado").innerHTML=piezaEs[1]+" "+procEs[1];
+        document.getElementById("resultado").innerHTML = piezaEs[1] + " " + procEs[1];
         //alert(piezaEs[1]+" "+procEs[1]);
     }
+
+    document.getElementById("boton3").addEventListener("click", function() {
+        document.getElementById("boton3").value = "Siguiente";
+        document.getElementById("codigo").innerHTML = lista[puntero].codigo;
+        document.getElementById("subtipo").innerHTML = lista[puntero].subtipo;
+        document.getElementById("numeroPieza").innerHTML = puntero;
+        document.getElementById("procesamiento").innerHTML = lista[puntero].procesamiento;
+        document.getElementById("fecha").innerHTML = lista[puntero].fecha;
+        if (lista[puntero].codigo.endsWith("E")) {
+            document.getElementById("potenciaMaterialT").innerHTML = "Potencia";
+            document.getElementById("potenciaMaterial").innerHTML = lista[puntero].potencia;
+            document.getElementById("voltajeT").innerHTML = "Voltaje";
+            document.getElementById("voltaje").innerHTML = lista[puntero].voltaje;
+        } else {
+            document.getElementById("potenciaMaterialT").innerHTML = "Material";
+            document.getElementById("potenciaMaterial").innerHTML = lista[puntero].material;
+            document.getElementById("voltajeT").innerHTML = "";
+            document.getElementById("voltaje").innerHTML = "";
+        }
+        if (puntero != lista.length) {
+            puntero++;
+        }
+    });
+
+    document.getElementById("boton4").addEventListener("click", function() {
+        if (puntero != 0) {
+            puntero--;
+        }
+        document.getElementById("codigo").innerHTML = lista[puntero].codigo;
+        document.getElementById("subtipo").innerHTML = lista[puntero].subtipo;
+        document.getElementById("numeroPieza").innerHTML = puntero;
+        document.getElementById("procesamiento").innerHTML = lista[puntero].procesamiento;
+        document.getElementById("fecha").innerHTML = lista[puntero].fecha;
+        if (lista[puntero].codigo.endsWith("E")) {
+            document.getElementById("potenciaMaterialT").innerHTML = "Potencia";
+            document.getElementById("potenciaMaterial").innerHTML = lista[puntero].potencia;
+            document.getElementById("voltajeT").innerHTML = "Voltaje";
+            document.getElementById("voltaje").innerHTML = lista[puntero].voltaje;
+        } else {
+            document.getElementById("potenciaMaterialT").innerHTML = "Material";
+            document.getElementById("potenciaMaterial").innerHTML = lista[puntero].material;
+            document.getElementById("voltajeT").innerHTML = "";
+            document.getElementById("voltaje").innerHTML = "";
+        }
+    });
 }
-document.getElementById("boton1").addEventListener("click",function(){
+document.getElementById("boton1").addEventListener("click", function() {
     var fab = new fabrica();
     fab.fabricacion(document.getElementById("boton1").value);
 });
 
-document.getElementById("boton2").addEventListener("click",function(){
+document.getElementById("boton2").addEventListener("click", function() {
     var fab = new fabrica();
     fab.fabricacion(1000);
 });
-
-

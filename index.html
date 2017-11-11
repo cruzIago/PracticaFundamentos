@@ -1,17 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>La fabrica de piezas</title>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
-<div>Pulse "Fabricar 100" para simular la fabricación de 100 piezas </div>
-<br>
-<div>Pulse "Fabricar 1000" para simular la fabricación de 1000 piezas</div>
-<input id="boton1" type="button" value="100">
-<input id="boton2" type="button" value="1000">
-<div id="resultado"></div>
-<script src="logic.js"></script>
+    <div>Pulse "Fabricar 100" para simular la fabricación de 100 piezas </div>
+    <br>
+    <div>Pulse "Fabricar 1000" para simular la fabricación de 1000 piezas</div>
+    <input id="boton1" type="button" value="100">
+    <input id="boton2" type="button" value="1000">
+
+    <div id="resultado"></div>
+
+    <table class="egt">
+
+        <tr>
+            <th>Nº pieza</th>
+            <th>Código</th>
+            <th>Subtipo</th>
+            <th>Procesamiento</th>
+            <th>Fecha</th>
+            <th id="potenciaMaterialT"></th>
+            <th id="voltajeT"></th>
+        </tr>
+        <tr>
+            <td id="numeroPieza"></td>
+            <td id="codigo"></td>
+            <td id="subtipo"></td>
+            <td id="procesamiento"></td>
+            <td id="fecha"></td>
+            <td id="potenciaMaterial"></td>
+            <td id="voltaje"></td>
+        </tr>
+    </table>
+    <input id="boton3" type="button" value="Mostrar lista">
+    <input id="boton4" type="button" value="Anterior">
+    <script src="logic.js"></script>
 </body>
+
 </html>
